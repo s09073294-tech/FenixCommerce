@@ -1,0 +1,354 @@
+{
+  "info": {
+    "name": "Fenix Commerce API",
+    "description": "Multi-tenant eCommerce Order Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Check Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orgId\": \"{{tenantId}}\",\n  \"websiteId\": \"{{storeId}}\",\n  \"externalOrderId\": \"SHOPIFY-12345\",\n  \"externalOrderNumber\": \"ORD-2024-001\",\n  \"status\": \"CREATED\",\n  \"financialStatus\": \"PAID\",\n  \"fulfillmentStatus\": \"UNFULFILLED\",\n  \"customerEmail\": \"customer@example.com\",\n  \"orderTotal\": 129.99,\n  \"currency\": \"USD\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"]
+            }
+          }
+        },
+        {
+          "name": "Get Order by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}"]
+            }
+          }
+        },
+        {
+          "name": "Search Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders?orgId={{tenantId}}&page=0&size=10&sort=orderUpdatedAt,desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"],
+              "query": [
+                {
+                  "key": "orgId",
+                  "value": "{{tenantId}}"
+                },
+                {
+                  "key": "websiteId",
+                  "value": "{{storeId}}",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "CREATED",
+                  "disabled": true
+                },
+                {
+                  "key": "financialStatus",
+                  "value": "PAID",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "orderUpdatedAt,desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search by External ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders/search?orgId={{tenantId}}&externalOrderId=SHOPIFY-12345",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "search"],
+              "query": [
+                {
+                  "key": "orgId",
+                  "value": "{{tenantId}}"
+                },
+                {
+                  "key": "externalOrderId",
+                  "value": "SHOPIFY-12345"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Order (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orgId\": \"{{tenantId}}\",\n  \"websiteId\": \"{{storeId}}\",\n  \"externalOrderId\": \"SHOPIFY-12345\",\n  \"externalOrderNumber\": \"ORD-2024-001\",\n  \"status\": \"CLOSED\",\n  \"financialStatus\": \"PAID\",\n  \"fulfillmentStatus\": \"FULFILLED\",\n  \"customerEmail\": \"customer@example.com\",\n  \"orderTotal\": 129.99,\n  \"currency\": \"USD\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Order (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"CLOSED\",\n  \"fulfillmentStatus\": \"FULFILLED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Order",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fulfillments",
+      "item": [
+        {
+          "name": "Create Fulfillment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"externalFulfillmentId\": \"SHIP-001\",\n  \"status\": \"SHIPPED\",\n  \"carrier\": \"FedEx\",\n  \"serviceLevel\": \"2-Day\",\n  \"shippedAt\": \"2024-01-15T10:30:00\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}/fulfillments",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}", "fulfillments"]
+            }
+          }
+        },
+        {
+          "name": "Get Fulfillment by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}/fulfillments/{{fulfillmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}", "fulfillments", "{{fulfillmentId}}"]
+            }
+          }
+        },
+        {
+          "name": "List Fulfillments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}/fulfillments?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}", "fulfillments"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "SHIPPED",
+                  "disabled": true
+                },
+                {
+                  "key": "carrier",
+                  "value": "FedEx",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search by External ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}/fulfillments/search?externalFulfillmentId=SHIP-001",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}", "fulfillments", "search"],
+              "query": [
+                {
+                  "key": "externalFulfillmentId",
+                  "value": "SHIP-001"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Fulfillment (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"externalFulfillmentId\": \"SHIP-001\",\n  \"status\": \"DELIVERED\",\n  \"carrier\": \"FedEx\",\n  \"serviceLevel\": \"2-Day\",\n  \"shippedAt\": \"2024-01-15T10:30:00\",\n  \"deliveredAt\": \"2024-01-17T14:20:00\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}/fulfillments/{{fulfillmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}", "fulfillments", "{{fulfillmentId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Fulfillment (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"DELIVERED\",\n  \"deliveredAt\": \"2024-01-17T14:20:00\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}/fulfillments/{{fulfillmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}", "fulfillments", "{{fulfillmentId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Fulfillment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}/fulfillments/{{fulfillmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}", "fulfillments", "{{fulfillmentId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "tenantId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "storeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "orderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "fulfillmentId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
